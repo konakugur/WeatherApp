@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="appOnScreen">Weather App</string>
+    <string name="hintApiKey"> Enter API Key...</string>
+    <string name="go_on">CONTINUE</string>
+    <string name="getCurrentWeather">Get Current Weather</string>
+</resources>
