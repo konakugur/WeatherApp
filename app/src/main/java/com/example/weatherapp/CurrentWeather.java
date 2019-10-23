@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,18 +26,20 @@ public class CurrentWeather extends AppCompatActivity {
 
     private String LATITUDE,LONGITUDE,API_KEY,JSON_RESPONSE;
     private String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?";
-    TextView coordinates;
+    TextView coordinates,temperatureText;
     Bundle extras;
-
+    ImageView weatherView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_weather);
+        weatherView = findViewById(R.id.WeatherView);
         extras = getIntent().getExtras();
         LATITUDE = extras.getString("LAT");
         LONGITUDE = extras.getString("LONG");
         API_KEY = extras.getString("API_KEY");
         coordinates = findViewById(R.id.Coordinates);
+        temperatureText = findViewById(R.id.temperatureText);
         BASE_URL = BASE_URL + "lat=" + LATITUDE + "&lon=" + LONGITUDE + "&appid=" + API_KEY;
 
         CurrentWeatherAsyncTask currentWeatherAsyncTask = new CurrentWeatherAsyncTask();
@@ -128,7 +133,7 @@ public class CurrentWeather extends AppCompatActivity {
             weather.setIconId(weatherObject.optString("icon"));
             weather.setLocationName(root.optString("name"));
             weather.setResponseCode(root.optString("cod"));
-            weather.setTemperature(weatherObject.optString("temp"));
+            weather.setTemperature(root.optJSONObject("main").optString("temp"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -136,7 +141,11 @@ public class CurrentWeather extends AppCompatActivity {
     }
 
     public void updateUI(Weather weather){
-        coordinates.setText(weather.getLocationName()+" / " +weather.getSituation());
+        String imageURL = "http://openweathermap.org/img/wn/" + weather.getIconId() + "@2x.png";
+        coordinates.setText(weather.getLocationName());
+        Picasso.with(getApplicationContext()).load(imageURL).resize(500,250).centerCrop().into(weatherView);
+        int temp = (int) (Float.parseFloat(weather.getTemperature()) - 273.0f);
+        temperatureText.setText((temp) + " \u2103");
     }
 
 }
