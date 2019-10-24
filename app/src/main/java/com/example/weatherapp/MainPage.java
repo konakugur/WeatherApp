@@ -47,7 +47,6 @@ public class MainPage extends AppCompatActivity {
     String API_KEY;
     Location LOCATION;
     ArrayList<String> coordinates;
-    Toolbar toolbar;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
@@ -63,8 +62,6 @@ public class MainPage extends AppCompatActivity {
         LOCATION = null;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         API_KEY = getIntent().getStringExtra("API_KEY");
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         Log.d("UGUR",API_KEY);
         suggestions = findViewById(R.id.suggestions);
         Places.initialize(getApplicationContext(),"AIzaSyBIjqYCctS8d3lDIEoeS_L9_DxTVLHghNI");
