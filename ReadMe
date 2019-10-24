@@ -1,0 +1,4 @@
+An android application to show weather forecast.
+The data is pulled from https://openweathermap.org/api.
+
+//TODO: show nearest location as a suggestion in search bar instead of using a button for that

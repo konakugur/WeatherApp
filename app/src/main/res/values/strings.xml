@@ -6,5 +6,5 @@
     <string name="testTemp">9</string>
     <string name="hintApiKey"> Enter API Key...</string>
     <string name="go_on">CONTINUE</string>
-    <string name="getCurrentWeather">Get Current Weather</string>
+    <string name="getCurrentWeather">Nearest Location</string>
 </resources>
