@@ -53,11 +53,9 @@ public class CurrentWeather extends AppCompatActivity {
         @Override
         protected Weather doInBackground(String... strings){
             BASE_URL = strings[0];
-            Log.d("UGUR",BASE_URL);
             url = createUrl(BASE_URL);
             try{
                 JSON_RESPONSE = makeHttpRequest(url);
-                Log.d("UGUR",JSON_RESPONSE);
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -85,7 +83,6 @@ public class CurrentWeather extends AppCompatActivity {
         String jsonResponse = "";
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;
-        Log.d("UGUR",jsonResponse);
         try {
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setReadTimeout(10000);
