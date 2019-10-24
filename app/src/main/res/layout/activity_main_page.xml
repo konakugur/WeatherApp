@@ -6,7 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MainPage">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="4dp">
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/suggestions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getCurrWeather"/>
+
     <Button
+        android:id="@+id/getCurrWeather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

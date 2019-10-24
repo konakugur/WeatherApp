@@ -1,5 +1,6 @@
 package com.example.weatherapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -14,21 +15,31 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainPage extends AppCompatActivity {
@@ -42,17 +53,44 @@ public class MainPage extends AppCompatActivity {
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 
+    TextView suggestions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_page);
         coordinates = new ArrayList<>();
         LOCATION = null;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        setContentView(R.layout.activity_main_page);
         API_KEY = getIntent().getStringExtra("API_KEY");
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Log.d("UGUR",API_KEY);
+        suggestions = findViewById(R.id.suggestions);
+        Places.initialize(getApplicationContext(),"AIzaSyBIjqYCctS8d3lDIEoeS_L9_DxTVLHghNI");
+        PlacesClient placesClient = Places.createClient(this);
+        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG));
+
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                Intent intent = new Intent(getBaseContext(),CurrentWeather.class);
+                Bundle extras = new Bundle();
+                extras.putString("LAT",String.valueOf(place.getLatLng().latitude));
+                extras.putString("LONG",String.valueOf(place.getLatLng().longitude));
+                extras.putString("API_KEY",API_KEY);
+                intent.putExtras(extras);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
     }
 
     @Override
