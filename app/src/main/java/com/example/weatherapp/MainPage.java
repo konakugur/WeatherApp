@@ -46,24 +46,18 @@ public class MainPage extends AppCompatActivity {
 
     String API_KEY;
     Location LOCATION;
-    ArrayList<String> coordinates;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 
-    TextView suggestions;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        coordinates = new ArrayList<>();
         LOCATION = null;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         API_KEY = getIntent().getStringExtra("API_KEY");
-        Log.d("UGUR",API_KEY);
-        suggestions = findViewById(R.id.suggestions);
         Places.initialize(getApplicationContext(),"AIzaSyBIjqYCctS8d3lDIEoeS_L9_DxTVLHghNI");
         PlacesClient placesClient = Places.createClient(this);
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -90,26 +84,6 @@ public class MainPage extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_toolbar,menu);
-        MenuItem search = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint("SEARCH");
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
 
     public void getCurrentWeatherForecast(View view){
         getLocationPermission();
@@ -154,9 +128,6 @@ public class MainPage extends AppCompatActivity {
                 super.onLocationResult(locationResult);
 
                 LOCATION = locationResult.getLastLocation();
-                Log.d("UGUR",String.valueOf(LOCATION.getLatitude()));
-                coordinates.add(String.valueOf(LOCATION.getLatitude()));
-                coordinates.add(String.valueOf(LOCATION.getLongitude()));
                 Intent intent = new Intent(getBaseContext(),CurrentWeather.class);
                 Bundle extras = new Bundle();
                 extras.putString("LAT",String.valueOf(LOCATION.getLatitude()));
